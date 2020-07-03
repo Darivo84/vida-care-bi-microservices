@@ -4,7 +4,7 @@ services:
     - docker
 
 before_install: 
-    - darivo/vida_care_bi_microservices .
+    - docker build -t darivo/vida_care_bi_microservices .
 
 script:
     - docker run darivo/vida_care_bi_microservices npm test
