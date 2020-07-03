@@ -4,7 +4,10 @@ services:
     - docker
 
 before_install: 
-    - docker build .
+    - docker build -t vida_care_bi_microservices/vida-api-gateway .
+    - docker build -t vida_care_bi_microservices/vida-notes-service .
+    - docker build -t vida_care_bi_microservices/vida-operations-service .
+    - docker build -t vida_care_bi_microservices/vida-users-service .
 
 script:
     - docker run darivo/vida_care_bi_microservices npm test
