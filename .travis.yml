@@ -10,7 +10,7 @@ before_install:
     - docker build -t vida_care_bi_microservices/vida-users-service .
 
 script:
-    - docker run darivo/vida_care_bi_microservices npm test
+    - docker-compose run app sh -c npm test
 
 after_success: 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
