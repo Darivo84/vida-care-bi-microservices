@@ -1,0 +1,73 @@
+version: "3"
+services:
+  vida-api-gateway:
+    build: "./vida-api-gateway"
+    depends_on:
+      - vida-notes-service
+      - vida-operations-service
+      - vida-users-service
+    environment:
+      - NOTES_SERVICE_URI=http://vida-notes-service:7100
+      - OPERATIONS_SERVICE_URI=http://vida-operations-service:7101
+      - USERS_SERVICE_URI=http://vida-users-service:7102
+    ports:
+      - 7000:7000
+    volumes:
+      - ./vida-api-gateway:/opt/app
+
+  vida-notes-service:
+    build: "./vida-notes-service"
+    depends_on:
+      - vida-notes-service-db
+    environment:
+      - DB_URI=mysql://root:password@vida-notes-service-db/db?charset=UTF8
+    ports:
+      - 7100:7100
+    volumes:
+      - ./vida-notes-service:/opt/app
+
+  vida-notes-service-db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+    image: mysql:5.7.20
+    ports:
+      - 0.0.0.0:7200:3306
+
+  vida-operations-service:
+    build: "./vida-operations-service"
+    depends_on:
+      - vida-operations-service-db
+    environment:
+      - DB_URI=mysql://root:password@vida-operations-service-db/db?charset=UTF8
+    ports:
+      - 7101:7101
+    volumes:
+      - ./vida-operations-service:/opt/app
+
+  vida-operations-service-db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+    image: mysql:5.7.20
+    ports:
+      - 0.0.0.0:7201:3306
+
+  vida-users-service:
+    build: "./vida-users-service"
+    depends_on:
+      - vida-users-service-db
+    environment:
+      - DB_URI=mysql://root:password@vida-users-service-db/db?charset=UTF8
+    ports:
+      - 7102:7102
+    volumes:
+      - ./vida-users-service:/opt/app
+
+  vida-users-service-db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=db
+    image: mysql:5.7.20
+    ports:
+      - 0.0.0.0:7202:3306
