@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+    - docker
+
+before_install: 
+    - darivo/vida_care_bi_microservices .
+
+script:
+    - docker run darivo/vida_care_bi_microservices npm test
+
+after_success: 
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    - docker push darivo/vida_care_bi_microservices
